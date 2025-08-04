@@ -15,7 +15,7 @@ This is a service that permits access to other services (usually but not necessa
 Created back when "well known ports" did not exceed 255,
 it was thought to be a useful service to allow a virtually unlimited other services to run behind it.
 
-Being a TCP multiplex service, one TCP services can be tunneled over it.
+Being a TCP multiplex service, only TCP services can be tunneled over it.
 
 ## Protocol usage
 
