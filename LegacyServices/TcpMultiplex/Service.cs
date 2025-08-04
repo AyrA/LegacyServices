@@ -109,12 +109,20 @@ internal class Service : BaseService
             //Do HELP if requested
             if (line.EqualsCI("HELP"))
             {
-                var list = options.Services
-                    .Where(m => m.Public)
-                    .Select(m => m.Name);
-                var bytes = (string.Join(Tools.CRLF, list) + Tools.CRLF).Utf();
-                await currentStream.WriteAsync(bytes);
-                await currentStream.FlushAsync();
+                if (options.Help)
+                {
+                    var list = options.Services
+                        .Where(m => m.Public)
+                        .Select(m => m.Name);
+                    var bytes = (string.Join(Tools.CRLF, list) + Tools.CRLF).Utf();
+                    await currentStream.WriteAsync(bytes);
+                    await currentStream.FlushAsync();
+                }
+                else
+                {
+                    //Pretend the service list is empty if help is disabled
+                    await currentStream.WriteAsync("\r\n".Utf());
+                }
                 return;
             }
 
