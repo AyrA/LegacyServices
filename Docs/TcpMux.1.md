@@ -68,23 +68,23 @@ If TLS is enforced (not implemented), the protocol can be used to enable TLS sup
 
 The service is configured in `TcpMultiplex.json`
 
-```json
+```js
 {
 	// Enable or disable the service entirely
-    "Enabled": true,
+	"Enabled": true,
 	// Enable STARTTLS support
-    "StartTls": true,
+	"StartTls": true,
 	// Allow HELP command. The command is always enabled but the list will be empty if set to "false"
-    "Help": true,
+	"Help": true,
 	// TLS certificate. This section is optional. If not specified (or set to null), a self-signed certificate will be used
-    "Certificate": {
+	"Certificate": {
 		// Certificate file. PEM or binary. Incomplete paths are resolved relative to the config directory.
-        "Public": "path/to/cert",
+		"Public": "path/to/cert",
 		// Key file. PEM or binary. Incomplete paths are resolved relative to the config directory.
-        "Private": "path/to/key"
-    },
+		"Private": "path/to/key"
+	},
 	// Service list. See below for service object
-    "Services": []
+	"Services": []
 }
 // Service
 {
