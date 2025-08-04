@@ -139,7 +139,7 @@ internal class Service : BaseService
         }
     }
 
-    private async Task<bool> Forward(Stream local, IPEndPoint destination)
+    private static async Task<bool> Forward(Stream local, IPEndPoint destination)
     {
         using var client = new TcpClient();
         try
