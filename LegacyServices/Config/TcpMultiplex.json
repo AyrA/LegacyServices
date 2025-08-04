@@ -1,3 +1,21 @@
 {
-
+    "Enabled": true,
+    "StartTls": true,
+    "Help": true,
+    "Certificate": {
+        "Public": "",
+        "Private": ""
+    },
+    "Services": [
+        {
+            "Name": "HTTP",
+            "Endpoint": "127.0.0.1:80",
+            "Public": true
+        },
+        {
+            "Name": "SSH",
+            "Endpoint": "127.0.0.1:22",
+            "Public": false
+        }
+    ]
 }

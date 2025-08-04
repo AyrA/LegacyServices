@@ -1,0 +1,166 @@
+﻿using System.Net;
+using System.Net.Security;
+using System.Net.Sockets;
+using System.Security.Cryptography.X509Certificates;
+
+namespace LegacyServices.TcpMultiplex;
+
+internal class Service : BaseService
+{
+    private Options? opt;
+    private X509Certificate2? certificate;
+    private TcpListener? listener;
+
+    public override string Name => "TcpMultiplex";
+
+    public override void Config(string configFile)
+    {
+        var options = Tools.LoadConfig<Options>(configFile);
+        options.Validate();
+        certificate?.Dispose();
+        if (options.StartTls)
+        {
+            //Use self signed certificate if certificate files are not specified
+            if (!string.IsNullOrEmpty(options.Certificate?.Private) && !string.IsNullOrEmpty(options.Certificate?.Public))
+            {
+                certificate = X509Certificate2.CreateFromPemFile(options.Certificate.Public, options.Certificate.Private);
+            }
+            else
+            {
+                certificate = Tools.GetSelfSignedCertificate();
+            }
+        }
+        else
+        {
+            certificate = null;
+        }
+        opt = options;
+        //Stop service if it's no longer enabled
+        if (!opt.Enabled)
+        {
+            Stop();
+            return;
+        }
+    }
+
+    public override void Start()
+    {
+        if (opt == null)
+        {
+            throw new InvalidOperationException("Configuration has not been loaded");
+        }
+        if (!opt.Enabled)
+        {
+            throw new InvalidOperationException("Service is disabled");
+        }
+        if (listener != null)
+        {
+            throw new InvalidOperationException("Service already started");
+        }
+        listener = new(System.Net.IPAddress.IPv6Any, 1);
+        listener.Start();
+        Accept();
+    }
+
+    public override void Stop()
+    {
+        listener?.Stop();
+        listener?.Dispose();
+        listener = null;
+    }
+
+    private async void Accept()
+    {
+        var options = opt;
+        if (listener == null || options == null)
+        {
+            return;
+        }
+        options.Validate();
+        Stream currentStream;
+        SslStream? tls = null;
+        using var socket = await listener!.AcceptSocketAsync();
+        Accept();
+        using var ns = new NetworkStream(socket, true);
+        //Terminate if the remote end becomes unresponsive
+        ns.WriteTimeout = ns.ReadTimeout = 30000;
+
+        currentStream = ns;
+        try
+        {
+            var line = await Tools.ReadLineAsync(currentStream);
+
+            //Do TLS if enabled
+            if (certificate != null && options.StartTls && line.EqualsCI("STARTTLS"))
+            {
+                tls = new SslStream(currentStream);
+                currentStream = tls;
+                await tls.AuthenticateAsServerAsync(certificate);
+                //Read again but now from the TLS stream to get the command
+                line = await Tools.ReadLineAsync(currentStream);
+            }
+
+            //Do HELP if requested
+            if (line.EqualsCI("HELP"))
+            {
+                var list = options.Services
+                    .Where(m => m.Public)
+                    .Select(m => m.Name);
+                var bytes = (string.Join(Tools.CRLF, list) + Tools.CRLF).Utf();
+                await currentStream.WriteAsync(bytes);
+                await currentStream.FlushAsync();
+                return;
+            }
+
+            var service = options.GetService(line);
+            if (service != null)
+            {
+                service.Validate();
+                ns.WriteTimeout = ns.ReadTimeout = Timeout.Infinite;
+                if (!await Forward(currentStream, service.Endpoint))
+                {
+                    await currentStream.WriteAsync("-Service unavailable\r\n".Utf());
+                }
+            }
+            else
+            {
+                await currentStream.WriteAsync("-Unknown service\r\n".Utf());
+            }
+        }
+        catch
+        {
+            //Network errors happen all the time.
+            //Do nothing and simply close the connection
+        }
+        finally
+        {
+            tls?.Dispose();
+            currentStream?.Dispose();
+        }
+    }
+
+    private async Task<bool> Forward(Stream local, IPEndPoint destination)
+    {
+        using var client = new TcpClient();
+        try
+        {
+            await client.ConnectAsync(destination);
+        }
+        catch
+        {
+            return false;
+        }
+        using var ns = new NetworkStream(client.Client, true);
+        var t1 = local.CopyToAsync(ns);
+        var t2 = ns.CopyToAsync(local);
+        try
+        {
+            await Task.WhenAll(t1, t2);
+        }
+        catch
+        {
+            //Don't care at this point
+        }
+        return true;
+    }
+}
