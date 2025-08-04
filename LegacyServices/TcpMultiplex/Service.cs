@@ -16,6 +16,11 @@ internal class Service : BaseService
     public override void Config(string configFile)
     {
         var options = Tools.LoadConfig<Options>(configFile);
+        Config(options);
+    }
+
+    public void Config(Options options)
+    {
         options.Validate();
         certificate?.Dispose();
         if (options.StartTls)
@@ -57,7 +62,8 @@ internal class Service : BaseService
         {
             throw new InvalidOperationException("Service already started");
         }
-        listener = new(System.Net.IPAddress.IPv6Any, 1);
+        listener = new(IPAddress.IPv6Any, 1);
+        listener.Server.DualMode = true;
         listener.Start();
         Accept();
     }
@@ -116,6 +122,7 @@ internal class Service : BaseService
             if (service != null)
             {
                 service.Validate();
+                //Disable timeouts again
                 ns.WriteTimeout = ns.ReadTimeout = Timeout.Infinite;
                 if (!await Forward(currentStream, service.Endpoint))
                 {
@@ -150,12 +157,14 @@ internal class Service : BaseService
         {
             return false;
         }
+        //Connected
+        await local.WriteAsync("+Connected\r\n".Utf());
         using var ns = new NetworkStream(client.Client, true);
         var t1 = local.CopyToAsync(ns);
         var t2 = ns.CopyToAsync(local);
         try
         {
-            await Task.WhenAll(t1, t2);
+            await Task.WhenAny(t1, t2);
         }
         catch
         {

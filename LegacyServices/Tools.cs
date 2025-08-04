@@ -51,18 +51,37 @@ internal static class Tools
 
     public static X509Certificate2 GetSelfSignedCertificate()
     {
+        //Windows needs certificates from PFX.
+        //You would think that it doesn't matters whether the certificate comes from PEM or PFX,
+        //but it does
+        if (OperatingSystem.IsWindows())
+        {
+            using var pemCert = X509Certificate2.CreateFromPem(publicCert, privateKey);
+            return new X509Certificate2(pemCert.Export(X509ContentType.Pfx));
+        }
         return X509Certificate2.CreateFromPem(publicCert, privateKey);
     }
 
     public static X509Certificate2 CreateCertificate(byte[] certData, byte[] keyData)
     {
-        return X509Certificate2.CreateFromPem(ToPem(certData, "CERTIFICATE"), ToPem(keyData, "PRIVATE KEY"));
+        var cert = X509Certificate2.CreateFromPem(ToPem(certData, "CERTIFICATE"), ToPem(keyData, "PRIVATE KEY"));
+        //Windows needs certificates from PFX.
+        //You would think that it doesn't matters whether the certificate comes from PEM or PFX,
+        //but it does
+        if (OperatingSystem.IsWindows())
+        {
+            using (cert)
+            {
+                return new X509Certificate2(cert.Export(X509ContentType.Pfx));
+            }
+        }
+        return cert;
     }
 
     public static string ReadLine(Stream s)
     {
         List<byte> bytes = [];
-        byte[] crlf = [0x13, 0x10];
+        byte[] crlf = [0x0D, 0x0A];
         while (true)
         {
             var b = s.ReadByte();
@@ -84,11 +103,11 @@ internal static class Tools
     public static async Task<string> ReadLineAsync(Stream s)
     {
         List<byte> bytes = [];
-        byte[] crlf = [0x13, 0x10];
+        byte[] crlf = [0x0D, 0x0A];
         byte[] buffer = [0];
         while (true)
         {
-            if (await s.ReadAsync(buffer) == 0)
+            if (0 == await s.ReadAsync(buffer))
             {
                 break;
             }
