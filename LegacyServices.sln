@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36221.1 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LegacyServices", "LegacyServices\LegacyServices.csproj", "{E79349C8-EE4B-4A69-8DF5-B58F8A857D20}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E79349C8-EE4B-4A69-8DF5-B58F8A857D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E79349C8-EE4B-4A69-8DF5-B58F8A857D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E79349C8-EE4B-4A69-8DF5-B58F8A857D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E79349C8-EE4B-4A69-8DF5-B58F8A857D20}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EA1A6F1D-1E19-4EF8-8F6F-CA1CA3ED40AA}
+	EndGlobalSection
+EndGlobal
