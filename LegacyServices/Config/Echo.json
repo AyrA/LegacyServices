@@ -1,3 +1,5 @@
 {
-    "Enabled": true
+    "Enabled": true,
+    "Timeout": 30,
+    "MaxData": 1e9
 }

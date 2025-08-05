@@ -85,10 +85,28 @@ internal class Service : BaseService<Options>
         }
         using var ns = new NetworkStream(socket, true);
         //Terminate if the remote end becomes unresponsive
-        ns.WriteTimeout = ns.ReadTimeout = 30000;
+        if (options.Timeout > 0)
+        {
+            ns.WriteTimeout = ns.ReadTimeout = options.Timeout * 1000;
+        }
+
         try
         {
-            await ns.CopyToAsync(ns);
+            if (options.MaxData < 1)
+            {
+                await ns.CopyToAsync(ns);
+            }
+            else
+            {
+                var buffer = new byte[1500];
+                var total = 0L;
+                while (total < options.MaxData)
+                {
+                    var count = await ns.ReadAsync(buffer);
+                    await ns.WriteAsync(buffer.AsMemory(0, count));
+                    total += count;
+                }
+            }
         }
         catch
         {
