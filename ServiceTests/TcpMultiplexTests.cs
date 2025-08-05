@@ -62,6 +62,14 @@ public class TcpMultiplexTests
     }
 
     [Test]
+    public void UseBuiltinConfig()
+    {
+        var opt = service.GetDefaultConfig();
+        service.Config(opt);
+        Assert.That(service.IsReady, Is.True);
+    }
+
+    [Test]
     public void StartService()
     {
         service.Config(GetBaseOptions());
