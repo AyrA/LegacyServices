@@ -53,6 +53,17 @@ internal class Service : BaseService<Options>
         IsReady = true;
     }
 
+    public override Options GetDefaultConfig()
+    {
+        return new()
+        {
+            Enabled = true,
+            Help = true,
+            StartTls = true,
+            Services = [new() { Name = "TCPMUX", Endpoint = IPEndPoint.Parse("127.1:1"), Public = true }]
+        };
+    }
+
     public override void Start()
     {
         if (opt == null)

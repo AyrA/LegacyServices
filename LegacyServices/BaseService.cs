@@ -7,8 +7,13 @@ internal abstract class BaseService<T> : BaseService
     /// </summary>
     /// <param name="config">Configuration</param>
     public abstract void Config(T config);
-}
 
+    /// <summary>
+    /// Gets a minimal functional configuration
+    /// </summary>
+    /// <returns>Configuration</returns>
+    public abstract T GetDefaultConfig();
+}
 
 internal abstract class BaseService
 {
