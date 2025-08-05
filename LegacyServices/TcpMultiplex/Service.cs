@@ -5,13 +5,16 @@ using System.Security.Cryptography.X509Certificates;
 
 namespace LegacyServices.TcpMultiplex;
 
-internal class Service : BaseService
+internal class Service : BaseService<Options>
 {
     private Options? opt;
     private X509Certificate2? certificate;
     private TcpListener? listener;
 
-    public override string Name => "TcpMultiplex";
+    public Service()
+    {
+        Name = "TcpMultiplex";
+    }
 
     public override void Config(string configFile)
     {
@@ -19,7 +22,7 @@ internal class Service : BaseService
         Config(options);
     }
 
-    public void Config(Options options)
+    public override void Config(Options options)
     {
         options.Validate();
         certificate?.Dispose();
@@ -44,8 +47,10 @@ internal class Service : BaseService
         if (!opt.Enabled)
         {
             Stop();
+            IsReady = false;
             return;
         }
+        IsReady = true;
     }
 
     public override void Start()

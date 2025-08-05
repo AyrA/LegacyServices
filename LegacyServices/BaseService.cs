@@ -1,12 +1,45 @@
 ﻿namespace LegacyServices;
 
-internal abstract class BaseService
+internal abstract class BaseService<T> : BaseService
 {
     /// <summary>
-    /// Gets the service name.
+    /// (Re-)loads service configuration from the given configuration
     /// </summary>
-    /// <remarks>Also used to retrieve the configuration file</remarks>
-    public abstract string Name { get; }
+    /// <param name="config">Configuration</param>
+    public abstract void Config(T config);
+}
+
+
+internal abstract class BaseService
+{
+    private string name = null!;
+
+    /// <summary>
+    /// Gets whether the service is in a state where is could be started
+    /// </summary>
+    public bool IsReady { get; protected set; }
+
+    /// <summary>
+    /// Gets the service name
+    /// </summary>
+    public string Name
+    {
+        get
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                throw new InvalidOperationException("Name has not been set");
+            }
+            return name;
+        }
+
+        protected set
+        {
+            ArgumentException.ThrowIfNullOrWhiteSpace(value);
+            name = value;
+        }
+    }
+
     /// <summary>
     /// Starts the service
     /// </summary>
