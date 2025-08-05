@@ -84,27 +84,23 @@ internal class Service : BaseService<Options>
             return;
         }
         using var ns = new NetworkStream(socket, true);
-        //Terminate if the remote end becomes unresponsive
-        if (options.Timeout > 0)
-        {
-            ns.WriteTimeout = ns.ReadTimeout = options.Timeout * 1000;
-        }
 
         try
         {
-            if (options.MaxData < 1)
+            var timeout = options.Timeout > 0 ? options.Timeout * 1000 : Timeout.Infinite;
+            using var cts = new CancellationTokenSource();
+            using var tAbort = new Timer((_) => cts.Cancel(), null, timeout, timeout);
+            var buffer = new byte[1500];
+            var total = 0L;
+
+            while (options.MaxData < 1 || total < options.MaxData)
             {
-                await ns.CopyToAsync(ns);
-            }
-            else
-            {
-                var buffer = new byte[1500];
-                var total = 0L;
-                while (total < options.MaxData)
+                var count = await ns.ReadAsync(buffer, cts.Token);
+                await ns.WriteAsync(buffer.AsMemory(0, count), cts.Token);
+                total += count;
+                if (timeout > 0)
                 {
-                    var count = await ns.ReadAsync(buffer);
-                    await ns.WriteAsync(buffer.AsMemory(0, count));
-                    total += count;
+                    tAbort.Change(timeout, timeout); //Reset the timer
                 }
             }
         }
