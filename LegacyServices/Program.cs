@@ -1,10 +1,23 @@
 ﻿using LegacyServices;
+using System.Diagnostics;
 
 List<BaseService> services = [
     new LegacyServices.TcpMultiplex.Service(),
-    new LegacyServices.Echo.Service()
+    new LegacyServices.Echo.Service(),
+    new LegacyServices.Discard.Service()
 ];
 var configRoot = Path.Combine(AppContext.BaseDirectory, "Config");
+
+var users = new List<string>();
+foreach (var proc in Process.GetProcesses())
+{
+    if (proc.Id != 0 && proc.Id != 4)
+    {
+        users.Add(proc.StartInfo.UserName);
+    }
+    proc.Dispose();
+}
+Console.WriteLine(string.Join("\r\n", users.Distinct()));
 
 foreach (var s in services)
 {
