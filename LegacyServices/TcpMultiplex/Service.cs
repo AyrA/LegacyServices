@@ -101,8 +101,17 @@ internal class Service : BaseService<Options>
         options.Validate();
         Stream currentStream;
         SslStream? tls = null;
-        using var socket = await listener!.AcceptSocketAsync();
-        Accept();
+        Socket socket = null!;
+        try
+        {
+            socket = await listener!.AcceptSocketAsync();
+            Accept();
+        }
+        catch
+        {
+            socket?.Dispose();
+            return;
+        }
         using var ns = new NetworkStream(socket, true);
         //Terminate if the remote end becomes unresponsive
         ns.WriteTimeout = ns.ReadTimeout = 30000;
