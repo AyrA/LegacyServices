@@ -1,10 +1,10 @@
-using LegacyServices.Echo;
+using LegacyServices.Discard;
 using System.Net;
 using System.Net.Sockets;
 
 namespace ServiceTests;
 
-public class EchoTests
+public class DiscardTests
 {
     private Service service;
 
@@ -46,28 +46,25 @@ public class EchoTests
     }
 
     [Test]
-    public async Task Echo()
+    public async Task DiscardDoesNotEcho()
     {
         CancellationTokenSource cts = new();
-        cts.CancelAfter(5000);
+        //cts.CancelAfter(5000);
         service.Config(service.GetDefaultConfig());
         service.Start();
 
-        using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 7), cts.Token);
-        using var ns = new NetworkStream(cli.Client, true);
-        ns.ReadTimeout = ns.WriteTimeout = 5000;
-        using var bw = new BinaryWriter(ns);
-        using var br = new BinaryReader(ns);
         byte[] data = [.. Enumerable.Range(0, 0x100).Select(m => (byte)m)];
-        bw.Write(data);
-        bw.Flush();
-        var compare = br.ReadBytes(data.Length);
-        Assert.That(data, Is.EquivalentTo(compare));
+        using var cli = new TcpClient();
+        cli.NoDelay = true;
+        cli.SendTimeout = cli.ReceiveTimeout = 2000;
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 9), cts.Token);
+        cli.Client.Send(data);
+        Assert.Throws<SocketException>(() => cli.Client.Receive(data));
     }
 
+
     [Test]
-    public async Task EchoTimeout()
+    public async Task DiscardTimeout()
     {
         CancellationTokenSource cts = new();
         cts.CancelAfter(15000);
@@ -77,7 +74,7 @@ public class EchoTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 7), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 9), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         ns.ReadTimeout = ns.WriteTimeout = 15000;
         var discard = ns.CopyToAsync(Stream.Null); //Discard received data
@@ -107,7 +104,7 @@ public class EchoTests
     }
 
     [Test]
-    public async Task EchoMaxData()
+    public async Task DiscardMaxData()
     {
         CancellationTokenSource cts = new();
         cts.CancelAfter(15000);
@@ -118,7 +115,7 @@ public class EchoTests
 
         using var cli = new TcpClient();
         cli.NoDelay = true;
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 7), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 9), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         var discard = ns.CopyToAsync(Stream.Null); //Discard received data
         byte[] data = [.. Enumerable.Range(0, 0x100).Select(m => (byte)m)];
