@@ -1,6 +1,6 @@
 ﻿namespace LegacyServices.Services.Discard;
 
-internal class Options
+internal class Options : IEnable
 {
     public bool Enabled { get; set; }
     public int Timeout { get; set; }

@@ -4,7 +4,7 @@ using System.Net;
 
 namespace LegacyServices.Services.TcpMultiplex;
 
-public class Options : IValidateable
+public class Options : IValidateable, IEnable
 {
     public bool Enabled { get; set; }
     public bool StartTls { get; set; }
