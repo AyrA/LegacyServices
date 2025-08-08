@@ -15,13 +15,21 @@ foreach (var s in services)
     Console.Write("Configuring ... ");
     try
     {
-        s.Config(Path.Combine(configRoot, s.Name + ".json"));
-        Ok();
+        var config = Path.Combine(configRoot, s.Name + ".json");
+        if (!File.Exists(config))
+        {
+            Fail("Configuration '{0}' does not exist. Will skip service", config);
+        }
+        else
+        {
+            s.Config(config);
+            Ok();
+        }
     }
     catch (Exception ex)
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Fail("Configuration failed. Reason: {0}", ex.Message);
+        Fail("Configuration failed. Service will be skipped. Reason: {0}", ex.Message);
         continue;
     }
     if (s.IsReady)
