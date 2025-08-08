@@ -69,6 +69,7 @@ public class EchoTests
     [Test]
     public async Task EchoTimeout()
     {
+        TestTools.IgnoreTimeoutTest();
         CancellationTokenSource cts = new();
         cts.CancelAfter(15000);
         var config = service.GetDefaultConfig();

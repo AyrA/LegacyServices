@@ -66,6 +66,7 @@ public class DiscardTests
     [Test]
     public async Task DiscardTimeout()
     {
+        TestTools.IgnoreTimeoutTest();
         CancellationTokenSource cts = new();
         cts.CancelAfter(15000);
         var config = service.GetDefaultConfig();

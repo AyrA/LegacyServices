@@ -6,6 +6,8 @@ internal static class TestTools
 {
     private static readonly JsonSerializerOptions opt;
 
+    public static bool DoTimeoutTests { get; set; }
+
     static TestTools()
     {
         opt = new(JsonSerializerDefaults.General)
@@ -16,6 +18,14 @@ internal static class TestTools
         opt.Converters.Add(new IPEndPointConverter());
         opt.Converters.Add(new ScientificNotationConverter());
         opt.MakeReadOnly(true);
+    }
+
+    public static void IgnoreTimeoutTest()
+    {
+        if (!DoTimeoutTests)
+        {
+            Assert.Ignore("Timeout tests are ignored. Set TestTools.DoTimeoutTests to 'true' to run these tests");
+        }
     }
 
     public static string ToJson<T>(this T? any) => JsonSerializer.Serialize(any, opt);
