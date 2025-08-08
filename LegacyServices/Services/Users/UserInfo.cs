@@ -1,4 +1,4 @@
-﻿namespace LegacyServices.Users;
+﻿namespace LegacyServices.Services.Users;
 
 internal record UserInfo(string Username, string? Domain)
 {

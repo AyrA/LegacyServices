@@ -1,4 +1,4 @@
-using LegacyServices.Echo;
+using LegacyServices.Services.Echo;
 using System.Net;
 using System.Net.Sockets;
 

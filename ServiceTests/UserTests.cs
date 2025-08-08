@@ -1,4 +1,4 @@
-using LegacyServices.Users;
+using LegacyServices.Services.Users;
 using System.Net;
 using System.Net.Sockets;
 

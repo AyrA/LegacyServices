@@ -1,4 +1,4 @@
-﻿namespace LegacyServices.Users;
+﻿namespace LegacyServices.Services.Users;
 
 internal interface IUserList
 {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-namespace LegacyServices.Users;
+namespace LegacyServices.Services.Users;
 
 internal class Service : BaseService<Options>
 {

@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-namespace LegacyServices.Echo;
+namespace LegacyServices.Services.Discard;
 
 internal class Service : BaseService<Options>
 {
@@ -10,7 +10,7 @@ internal class Service : BaseService<Options>
 
     public Service()
     {
-        Name = "Echo";
+        Name = "Discard";
     }
 
     public override void Config(Options config)
@@ -44,7 +44,7 @@ internal class Service : BaseService<Options>
         {
             throw new InvalidOperationException("Service already started");
         }
-        server = new(IPAddress.IPv6Any, 7);
+        server = new(IPAddress.IPv6Any, 9);
         server.Server.DualMode = true;
         try
         {
@@ -96,7 +96,6 @@ internal class Service : BaseService<Options>
             while (options.MaxData < 1 || total < options.MaxData)
             {
                 var count = await ns.ReadAsync(buffer, cts.Token);
-                await ns.WriteAsync(buffer.AsMemory(0, count), cts.Token);
                 total += count;
                 if (timeout > 0)
                 {

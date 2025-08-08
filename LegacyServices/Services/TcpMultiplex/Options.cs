@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
-namespace LegacyServices.TcpMultiplex;
+namespace LegacyServices.Services.TcpMultiplex;
 
 public class Options : IValidateable
 {

@@ -1,29 +1,29 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace LegacyServices.Users;
+namespace LegacyServices.Services.Users;
 
 internal class NativeWindows : UserList
 {
     [DllImport("wtsapi32.dll")]
-    private static extern IntPtr WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] string pServerName);
+    private static extern nint WTSOpenServer([MarshalAs(UnmanagedType.LPStr)] string pServerName);
 
     [DllImport("wtsapi32.dll")]
-    private static extern void WTSCloseServer(IntPtr hServer);
+    private static extern void WTSCloseServer(nint hServer);
 
     [DllImport("wtsapi32.dll")]
     private static extern int WTSEnumerateSessions(
-        IntPtr hServer,
+        nint hServer,
         [MarshalAs(UnmanagedType.U4)] int Reserved,
         [MarshalAs(UnmanagedType.U4)] int Version,
-        ref IntPtr ppSessionInfo,
+        ref nint ppSessionInfo,
         [MarshalAs(UnmanagedType.U4)] ref int pCount);
 
     [DllImport("wtsapi32.dll")]
-    private static extern void WTSFreeMemory(IntPtr pMemory);
+    private static extern void WTSFreeMemory(nint pMemory);
 
     [DllImport("wtsapi32.dll")]
     private static extern bool WTSQuerySessionInformation(
-        IntPtr hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out IntPtr ppBuffer, out uint pBytesReturned);
+        nint hServer, int sessionId, WTS_INFO_CLASS wtsInfoClass, out nint ppBuffer, out uint pBytesReturned);
 
     [StructLayout(LayoutKind.Sequential)]
     private struct WTS_SESSION_INFO
@@ -77,21 +77,21 @@ internal class NativeWindows : UserList
         {
             throw new PlatformNotSupportedException();
         }
-        IntPtr serverHandle;
+        nint serverHandle;
         List<UserInfo> ret = [];
         serverHandle = WTSOpenServer(serverName);
 
         try
         {
-            IntPtr sessionInfoPtr = IntPtr.Zero;
-            IntPtr userPtr = IntPtr.Zero;
-            IntPtr domainPtr = IntPtr.Zero;
+            nint sessionInfoPtr = nint.Zero;
+            nint userPtr = nint.Zero;
+            nint domainPtr = nint.Zero;
             int sessionCount = 0;
             int retVal = WTSEnumerateSessions(serverHandle, 0, 1, ref sessionInfoPtr, ref sessionCount);
             if (retVal != 0)
             {
                 int dataSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
-                IntPtr currentSession = sessionInfoPtr;
+                nint currentSession = sessionInfoPtr;
 
                 for (int i = 0; i < sessionCount; i++)
                 {
@@ -103,7 +103,7 @@ internal class NativeWindows : UserList
 
                     try
                     {
-                        if (userPtr == IntPtr.Zero || domainPtr == IntPtr.Zero)
+                        if (userPtr == nint.Zero || domainPtr == nint.Zero)
                         {
                             throw new Exception("Unable to query user or domain name");
                         }

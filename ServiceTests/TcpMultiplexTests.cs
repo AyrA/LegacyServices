@@ -1,5 +1,5 @@
 using LegacyServices;
-using LegacyServices.TcpMultiplex;
+using LegacyServices.Services.TcpMultiplex;
 using System.Net;
 using System.Net.Security;
 using System.Net.Sockets;

@@ -1,10 +1,10 @@
 ﻿using LegacyServices;
 
 List<BaseService> services = [
-    new LegacyServices.TcpMultiplex.Service(),
-    new LegacyServices.Echo.Service(),
-    new LegacyServices.Discard.Service(),
-    new LegacyServices.Users.Service(),
+    new LegacyServices.Services.TcpMultiplex.Service(),
+    new LegacyServices.Services.Echo.Service(),
+    new LegacyServices.Services.Discard.Service(),
+    new LegacyServices.Services.Users.Service(),
 ];
 var configRoot = Path.Combine(AppContext.BaseDirectory, "Config");
 

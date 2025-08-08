@@ -1,4 +1,4 @@
-using LegacyServices.Discard;
+using LegacyServices.Services.Discard;
 using System.Net;
 using System.Net.Sockets;
 

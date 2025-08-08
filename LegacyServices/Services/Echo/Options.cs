@@ -1,4 +1,4 @@
-﻿namespace LegacyServices.Discard;
+﻿namespace LegacyServices.Services.Echo;
 
 internal class Options
 {
