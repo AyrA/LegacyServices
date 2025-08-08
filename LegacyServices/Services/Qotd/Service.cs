@@ -7,8 +7,8 @@ internal class Service : BaseResponseService<Options>
         Name = "QOTD";
     }
 
-    protected override byte[]? GetResponse(Options options)
+    protected override Task<byte[]?> GetResponse(Options options, int _)
     {
-        return (options.GetQuote() + Tools.CRLF).Utf();
+        return Task.FromResult((options.GetQuote() + Tools.CRLF).Utf())!;
     }
 }

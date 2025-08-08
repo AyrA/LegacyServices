@@ -14,7 +14,7 @@ Service that sends a message to a user
 
 ## Protocol usage
 
-Client sends a command, and the server replies with a success or error message. Multiple commands can be sent in succession.
+Client sends a command, and the server replies with a success or error message. Multiple commands can be sent in succession, and it's up to the client to disconnect. The server may disconnect after sufficient idle time.
 
 ## Security considerations
 

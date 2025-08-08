@@ -6,8 +6,8 @@ internal class Service : BaseResponseService<Options>
         Name = "Daytime";
     }
 
-    protected override byte[]? GetResponse(Options options)
+    protected override Task<byte[]?> GetResponse(Options options, int _)
     {
-        return (options.GetDate() + Tools.CRLF).Utf();
+        return Task.FromResult((options.GetDate() + Tools.CRLF).Utf())!;
     }
 }

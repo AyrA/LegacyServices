@@ -6,13 +6,13 @@ internal class Service : BaseResponseService<Options>
         Name = "Netstat";
     }
 
-    protected override byte[]? GetResponse(Options options)
+    protected override Task<byte[]?> GetResponse(Options options, int _)
     {
         var lines = Tools.Exec("netstat", "-an").TrimEnd().Split('\n');
         if (!options.All)
         {
             lines = [.. lines.Where(m => m.ContainsCI("LISTEN"))];
         }
-        return (string.Join(Tools.CRLF, lines) + Tools.CRLF).Utf();
+        return Task.FromResult((string.Join(Tools.CRLF, lines) + Tools.CRLF).Utf())!;
     }
 }

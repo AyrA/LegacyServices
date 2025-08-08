@@ -13,6 +13,7 @@ internal abstract class BaseResponseService<T>(int port) : BaseService<T> where 
 {
     protected T? opt;
     private TcpListener? server;
+    protected bool repeat;
 
     public override void Config(T config)
     {
@@ -66,7 +67,7 @@ internal abstract class BaseResponseService<T>(int port) : BaseService<T> where 
         server = null;
     }
 
-    protected abstract byte[]? GetResponse(T options);
+    protected abstract Task<byte[]?> GetResponse(T options, int iteration);
 
     private async void Accept()
     {
@@ -87,18 +88,23 @@ internal abstract class BaseResponseService<T>(int port) : BaseService<T> where 
             socket?.Dispose();
             return;
         }
-        var data = GetResponse(options);
-        if (data == null || data.Length == 0)
-        {
-            return;
-        }
-        var cts = new CancellationTokenSource();
-        cts.CancelAfter(10000);
         using (socket)
         {
             try
             {
-                await socket.SendAsync(data, cts.Token);
+                int iteration = 0;
+                do
+                {
+                    using var cts = new CancellationTokenSource();
+                    cts.CancelAfter(10000);
+                    var data = await GetResponse(options, ++iteration);
+                    if (data == null || data.Length == 0)
+                    {
+                        return;
+                    }
+                    await socket.SendAsync(data, cts.Token);
+                }
+                while (repeat);
             }
             catch
             {

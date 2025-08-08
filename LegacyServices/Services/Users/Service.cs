@@ -7,9 +7,9 @@ internal class Service : BaseResponseService<Options>
         Name = "Users";
     }
 
-    protected override byte[]? GetResponse(Options options)
+    protected override Task<byte[]?> GetResponse(Options options, int _)
     {
-        return (string.Join(Tools.CRLF, GetUsers()) + Tools.CRLF).Utf();
+        return Task.FromResult((string.Join(Tools.CRLF, GetUsers()) + Tools.CRLF).Utf())!;
     }
 
     private string[] GetUsers()
