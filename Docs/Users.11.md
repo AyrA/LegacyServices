@@ -1,4 +1,4 @@
-# Echo Service
+# User Service
 
 - **Full Name**: Active Users
 - **Port**: 11
@@ -27,7 +27,8 @@ There are practically no valid usage scenarios for modern times. Modern systems 
 ## Implementation
 
 Implementation is as per RFC.
-Only the current user will be returned however, since enumerating user sessions usually requires elevated permissions.
+Users are returned as plain user names for local users,
+and (on Windows) user@domain for remote users
 
 ## Configuration
 
@@ -36,6 +37,8 @@ The service is configured in `Users.json`
 ```js
 {
 	//Enable or disable the service entirely
-	"Enabled": true
+	"Enabled": true,
+	//Only return the user that runs this service
+	"CurrentOnly": false
 }
 ```

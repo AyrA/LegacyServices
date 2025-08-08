@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Diagnostics;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.Json;
@@ -21,6 +22,7 @@ internal static class Tools
             ReadCommentHandling = JsonCommentHandling.Skip
         };
         opt.Converters.Add(new IPEndPointConverter());
+        opt.Converters.Add(new ScientificNotationConverter());
         opt.MakeReadOnly(true);
 
         var segments = new string[]
@@ -120,6 +122,22 @@ internal static class Tools
             }
         }
         return bytes.Utf();
+    }
+
+    public static string Exec(string command)
+    {
+        var psi = new ProcessStartInfo(command)
+        {
+            UseShellExecute = false,
+            RedirectStandardOutput = true,
+            RedirectStandardError = true,
+            RedirectStandardInput = true
+        };
+        using var p = Process.Start(psi)
+            ?? throw new ArgumentException("Supplied command could not be started");
+        p.StandardInput.Close();
+        _ = p.StandardError.ReadToEndAsync();
+        return p.StandardOutput.ReadToEnd();
     }
 
     private static string ToPem(byte[] data, string type)

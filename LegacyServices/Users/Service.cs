@@ -100,11 +100,28 @@ internal class Service : BaseService<Options>
         }
     }
 
-    private static string[] GetUsers()
+    private string[] GetUsers()
     {
-        //TODO: Get list of all active users.
-        //This usually requires some sort of elevated permission,
-        //so we don't do it here
+        if (opt?.CurrentOnly ?? true)
+        {
+            return [Environment.UserName];
+        }
+        try
+        {
+            if (OperatingSystem.IsLinux())
+            {
+                return [.. new NativeLinux().GetUsers().Select(m => m.UPN)];
+            }
+            if (OperatingSystem.IsWindows())
+            {
+                return [.. new NativeWindows().GetUsers().Select(m => m.UPN)];
+            }
+        }
+        catch
+        {
+            return [];
+        }
+        //Return current user on unsupported systems
         return [Environment.UserName];
     }
 }

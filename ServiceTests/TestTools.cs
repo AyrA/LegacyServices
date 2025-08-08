@@ -14,6 +14,7 @@ internal static class TestTools
             ReadCommentHandling = JsonCommentHandling.Skip
         };
         opt.Converters.Add(new IPEndPointConverter());
+        opt.Converters.Add(new ScientificNotationConverter());
         opt.MakeReadOnly(true);
     }
 
