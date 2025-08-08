@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using LegacyServices.Json;
+using System.Diagnostics;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;

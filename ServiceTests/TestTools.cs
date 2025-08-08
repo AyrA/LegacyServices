@@ -1,4 +1,4 @@
-﻿using LegacyServices;
+﻿using LegacyServices.Json;
 using System.Text.Json;
 
 namespace ServiceTests;

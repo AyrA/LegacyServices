@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace LegacyServices;
+namespace LegacyServices.Json;
 
 internal class ScientificNotationConverter : JsonConverter<long>
 {
