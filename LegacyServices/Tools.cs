@@ -23,7 +23,8 @@ internal static class Tools
             ReadCommentHandling = JsonCommentHandling.Skip
         };
         opt.Converters.Add(new IPEndPointConverter());
-        opt.Converters.Add(new ScientificNotationConverter());
+        opt.Converters.Add(new ScientificNotationConverterLong());
+        opt.Converters.Add(new ScientificNotationConverterInt());
         opt.MakeReadOnly(true);
 
         var segments = new string[]
