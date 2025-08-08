@@ -32,6 +32,7 @@ The implementation of the service in this project
 - **Limited**: Protocol is implemented but will lilely not provide full compatibility with the original specification. This may be due to missing or altered features
 - **Incompatible**: Protocol is not implemented in an RFC compliant manner
 - **Extra**: The protocol has been extended with modern features
+- **Unspecified**: The protocol lacks formal definition, or the definition is not accurate enough to implement it in a faithful manner
 
 More details will be available in the "Implementation" chapter of the relevant protocol.
 

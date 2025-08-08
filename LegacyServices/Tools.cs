@@ -125,7 +125,7 @@ internal static class Tools
         return bytes.Utf();
     }
 
-    public static string Exec(string command)
+    public static string Exec(string command, params string[] arguments)
     {
         var psi = new ProcessStartInfo(command)
         {
@@ -134,6 +134,14 @@ internal static class Tools
             RedirectStandardError = true,
             RedirectStandardInput = true
         };
+        if (arguments != null)
+        {
+            foreach (var arg in arguments)
+            {
+                psi.ArgumentList.Add(arg);
+            }
+        }
+
         using var p = Process.Start(psi)
             ?? throw new ArgumentException("Supplied command could not be started");
         p.StandardInput.Close();
