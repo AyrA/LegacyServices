@@ -11,4 +11,8 @@ internal static class Extensions
     public static byte[] Utf(this string s) => Encoding.UTF8.GetBytes(s);
 
     public static string Utf(this IEnumerable<byte> b) => Encoding.UTF8.GetString([.. b]);
+
+    public static byte[] Latin1(this string s) => Encoding.Latin1.GetBytes(s);
+
+    public static string Latin1(this IEnumerable<byte> b) => Encoding.Latin1.GetString([.. b]);
 }

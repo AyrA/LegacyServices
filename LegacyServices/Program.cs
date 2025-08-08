@@ -6,7 +6,9 @@ List<BaseService> services = [
     new LegacyServices.Services.Discard.Service(),
     new LegacyServices.Services.Users.Service(),
     new LegacyServices.Services.Daytime.Service(),
-    new LegacyServices.Services.Netstat.Service()
+    new LegacyServices.Services.Netstat.Service(),
+    new LegacyServices.Services.Qotd.Service(),
+    new LegacyServices.Services.Message.Service(),
 ];
 var configRoot = Path.Combine(AppContext.BaseDirectory, "Config");
 

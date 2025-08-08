@@ -103,21 +103,49 @@ internal static class Tools
         return bytes.Utf();
     }
 
-    public static async Task<string> ReadLineAsync(Stream s)
+    public static async Task<string> ReadLineAsync(Stream s, int limit, CancellationToken ct = default)
     {
         List<byte> bytes = [];
         byte[] crlf = [0x0D, 0x0A];
         byte[] buffer = [0];
         while (true)
         {
-            if (0 == await s.ReadAsync(buffer))
+            if (0 == await s.ReadAsync(buffer, ct))
             {
                 break;
             }
             bytes.Add(buffer[0]);
+            if (bytes.Count > limit)
+            {
+                throw new IOException("Received data exceeds length limit");
+            }
             if (bytes.TakeLast(2).SequenceEqual(crlf))
             {
                 bytes.RemoveAt(bytes.Count - 1);
+                bytes.RemoveAt(bytes.Count - 1);
+                break;
+            }
+        }
+        return bytes.Latin1();
+    }
+
+    public static async Task<string> ReadNullTerminatedStringAsync(Stream s, int limit, CancellationToken ct = default)
+    {
+        List<byte> bytes = [];
+        byte[] buffer = [0];
+        while (true)
+        {
+            if (0 == await s.ReadAsync(buffer, ct))
+            {
+                break;
+            }
+            bytes.Add(buffer[0]);
+            if (bytes.Count > limit)
+            {
+                throw new IOException("Received data exceeds length limit");
+            }
+            if (bytes[^1] == 0)
+            {
                 bytes.RemoveAt(bytes.Count - 1);
                 break;
             }

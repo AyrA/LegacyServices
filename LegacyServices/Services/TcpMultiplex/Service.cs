@@ -113,22 +113,29 @@ internal class Service : BaseService<Options>
             return;
         }
         using var ns = new NetworkStream(socket, true);
+
         //Terminate if the remote end becomes unresponsive
+        CancellationTokenSource cts = new();
+        cts.CancelAfter(30000);
         ns.WriteTimeout = ns.ReadTimeout = 30000;
 
         currentStream = ns;
         try
         {
-            var line = await Tools.ReadLineAsync(currentStream);
+            var line = await Tools.ReadLineAsync(currentStream, 80, cts.Token);
 
             //Do TLS if enabled
             if (certificate != null && options.StartTls && line.EqualsCI("STARTTLS"))
             {
+                var authOpt = new SslServerAuthenticationOptions()
+                {
+                    ServerCertificate = certificate
+                };
                 tls = new SslStream(currentStream);
                 currentStream = tls;
-                await tls.AuthenticateAsServerAsync(certificate);
+                await tls.AuthenticateAsServerAsync(authOpt, cts.Token);
                 //Read again but now from the TLS stream to get the command
-                line = await Tools.ReadLineAsync(currentStream);
+                line = await Tools.ReadLineAsync(currentStream, 80, cts.Token);
             }
 
             //Do HELP if requested
@@ -139,14 +146,14 @@ internal class Service : BaseService<Options>
                     var list = options.Services
                         .Where(m => m.Public)
                         .Select(m => m.Name);
-                    var bytes = (string.Join(Tools.CRLF, list) + Tools.CRLF).Utf();
-                    await currentStream.WriteAsync(bytes);
-                    await currentStream.FlushAsync();
+                    var bytes = (string.Join(Tools.CRLF, list) + Tools.CRLF).Latin1();
+                    await currentStream.WriteAsync(bytes, cts.Token);
+                    await currentStream.FlushAsync(cts.Token);
                 }
                 else
                 {
                     //Pretend the service list is empty if help is disabled
-                    await currentStream.WriteAsync("\r\n".Utf());
+                    await currentStream.WriteAsync("\r\n".Latin1(), cts.Token);
                 }
                 return;
             }
@@ -159,12 +166,12 @@ internal class Service : BaseService<Options>
                 ns.WriteTimeout = ns.ReadTimeout = Timeout.Infinite;
                 if (!await Forward(currentStream, service.Endpoint))
                 {
-                    await currentStream.WriteAsync("-Service unavailable\r\n".Utf());
+                    await currentStream.WriteAsync("-Service unavailable\r\n".Latin1(), cts.Token);
                 }
             }
             else
             {
-                await currentStream.WriteAsync("-Unknown service\r\n".Utf());
+                await currentStream.WriteAsync("-Unknown service\r\n".Latin1(), cts.Token);
             }
         }
         catch
@@ -181,17 +188,19 @@ internal class Service : BaseService<Options>
 
     private static async Task<bool> Forward(Stream local, IPEndPoint destination)
     {
+        using var cts = new CancellationTokenSource();
+        cts.CancelAfter(5000);
         using var client = new TcpClient();
         try
         {
-            await client.ConnectAsync(destination);
+            await client.ConnectAsync(destination, cts.Token);
         }
         catch
         {
             return false;
         }
         //Connected
-        await local.WriteAsync("+Connected\r\n".Utf());
+        await local.WriteAsync("+Connected\r\n".Latin1(), cts.Token);
         using var ns = new NetworkStream(client.Client, true);
         var t1 = local.CopyToAsync(ns);
         var t2 = ns.CopyToAsync(local);
