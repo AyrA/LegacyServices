@@ -11,9 +11,24 @@ namespace LegacyServices.Services;
 /// <param name="port">TCP server port</param>
 internal abstract class BaseResponseService<T>(int port) : BaseService<T> where T : class, IEnable, new()
 {
+    /// <summary>
+    /// Current set of options. Null if none have been set yet
+    /// </summary>
     protected T? opt;
+    /// <summary>
+    /// Current TCP listener. Null if not listening
+    /// </summary>
     private TcpListener? server;
+    /// <summary>
+    /// Gets whether to repeatedly call <see cref="GetResponse(T, int)"/>
+    /// or to disconnect after a single call
+    /// </summary>
     protected bool repeat;
+    /// <summary>
+    /// Gets whether to set the NoDelay flag on sockets or not.
+    /// Default is to set the flag
+    /// </summary>
+    protected bool useNodelay = true;
 
     public override void Config(T config)
     {
@@ -80,7 +95,7 @@ internal abstract class BaseResponseService<T>(int port) : BaseService<T> where 
         try
         {
             socket = await server.AcceptSocketAsync();
-            socket.NoDelay = true;
+            socket.NoDelay = useNodelay;
             Accept();
         }
         catch
