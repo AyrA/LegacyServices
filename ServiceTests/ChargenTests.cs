@@ -56,9 +56,17 @@ public class ChargenTests
         config.LineDelay = -1;
         config.LineLimit = 0;
         Assert.Throws<ValidationException>(config.Validate);
-        //Line count
+
+        //Global delay
+        config = service.GetDefaultConfig();
         config.LineDelay = 0;
+        config.GlobalDelay = true;
+        Assert.Throws<ValidationException>(config.Validate);
+
+        //Line count
+        config = service.GetDefaultConfig();
         config.LineLimit = -1;
+        config.LineDelay = 0;
         Assert.Throws<ValidationException>(config.Validate);
     }
 

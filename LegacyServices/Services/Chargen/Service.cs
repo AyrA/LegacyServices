@@ -2,7 +2,8 @@
 
 internal class Service : BaseResponseService<Options>
 {
-    readonly byte[][] lines;
+    private static readonly SemaphoreSlim globalDelay = new(1);
+    private readonly byte[][] lines;
 
     public Service() : base(19)
     {
@@ -27,7 +28,22 @@ internal class Service : BaseResponseService<Options>
         }
         if (options.LineDelay > 0)
         {
-            await Task.Delay(options.LineDelay);
+            if (options.GlobalDelay)
+            {
+                await globalDelay.WaitAsync();
+                try
+                {
+                    await Task.Delay(options.LineDelay);
+                }
+                finally
+                {
+                    globalDelay.Release();
+                }
+            }
+            else
+            {
+                await Task.Delay(options.LineDelay);
+            }
         }
         return lines[(iteration - 1) % lines.Length];
     }

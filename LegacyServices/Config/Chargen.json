@@ -1,5 +1,6 @@
 {
     "Enabled": true,
     "LineLimit": 1e6,
-    "LineDelay": 100
+    "LineDelay": 100,
+    "GlobalDelay": false
 }
