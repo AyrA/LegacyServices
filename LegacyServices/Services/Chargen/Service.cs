@@ -2,10 +2,20 @@
 
 internal class Service : BaseResponseService<Options>
 {
+    readonly byte[][] lines;
+
     public Service() : base(19)
     {
         Name = "Chargen";
         repeat = true;
+
+        //Pre-generate all possible lines
+        var temp = new List<byte[]>();
+        for (var i = 0; i < 95; i++)
+        {
+            temp.Add([.. Enumerable.Range(i, 95).Select(m => (byte)((m % 95) + 0x20)), 0x0D, 0x0A]);
+        }
+        lines = [.. temp];
     }
 
     protected override async Task<byte[]?> GetResponse(Options options, int iteration)
@@ -19,6 +29,6 @@ internal class Service : BaseResponseService<Options>
         {
             await Task.Delay(options.LineDelay);
         }
-        return [.. Enumerable.Range(iteration - 1, 95).Select(m => (byte)((m % 95) + 0x20)), 0x0D, 0x0A];
+        return lines[(iteration - 1) % lines.Length];
     }
 }
