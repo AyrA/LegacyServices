@@ -29,7 +29,7 @@ There are practically no valid usage scenarios for modern times. The protocol ma
 
 ## Implementation
 
-Implementation is as per RFC. Extra options to set limits exist.
+Implementation is as per RFC. Extra options to set limits exist. A speed test option also exists
 
 ## Configuration
 
@@ -44,6 +44,8 @@ The service is configured in `Chargen.json`
 	//Delay individual lines by the given number of milliseconds. Zero indicates no delay
 	"LineDelay": 100,
 	//Apply the delay accross all connected clients rather than individually
-	"GlobalDelay": false
+	"GlobalDelay": false,
+	//Speedtest mode. Sends multiple lines at once. Cannot be used together with LineDelay or GlobalDelay. LineLimit works but will only be accurate to a block boundary
+	"SpeedTest": false
 }
 ```

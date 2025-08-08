@@ -68,6 +68,19 @@ public class ChargenTests
         config.LineLimit = -1;
         config.LineDelay = 0;
         Assert.Throws<ValidationException>(config.Validate);
+
+        //Speedtest mode
+        config = service.GetDefaultConfig();
+        config.LineLimit = 0;
+        config.LineDelay = 1;
+        config.SpeedTest = true;
+        Assert.Throws<ValidationException>(config.Validate);
+        config.LineDelay = 0;
+        config.GlobalDelay = true;
+        Assert.Throws<ValidationException>(config.Validate);
+        config.LineDelay = 0;
+        config.GlobalDelay = false;
+        Assert.DoesNotThrow(config.Validate);
     }
 
     [Test]
