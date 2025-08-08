@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using LegacyServices.Validation;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
 namespace LegacyServices.Services.TcpMultiplex;

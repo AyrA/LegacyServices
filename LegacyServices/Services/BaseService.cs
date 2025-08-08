@@ -1,4 +1,4 @@
-﻿namespace LegacyServices;
+﻿namespace LegacyServices.Services;
 
 internal abstract class BaseService<T> : BaseService
 {

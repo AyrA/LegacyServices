@@ -1,4 +1,4 @@
-﻿using LegacyServices;
+﻿using LegacyServices.Services;
 
 List<BaseService> services = [
     new LegacyServices.Services.TcpMultiplex.Service(),

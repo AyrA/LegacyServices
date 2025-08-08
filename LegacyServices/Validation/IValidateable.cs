@@ -1,4 +1,4 @@
-﻿namespace LegacyServices;
+﻿namespace LegacyServices.Validation;
 
 internal interface IValidateable
 {

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 
-namespace LegacyServices;
+namespace LegacyServices.Validation;
 
 internal class ValidationException : Exception
 {
