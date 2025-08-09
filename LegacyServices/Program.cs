@@ -45,6 +45,7 @@ foreach (var s in services)
         {
             s.Start();
             Ok();
+            Console.WriteLine("Service ready on port {0}", s.Port);
         }
         catch (Exception ex)
         {
@@ -54,7 +55,7 @@ foreach (var s in services)
     else
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
-        Console.WriteLine("Service is disabled by configuration. Did not start");
+        Console.WriteLine("Service is disabled or not ready. Did not start");
         Console.ResetColor();
     }
 }

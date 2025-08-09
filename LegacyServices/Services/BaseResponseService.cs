@@ -9,7 +9,7 @@ namespace LegacyServices.Services;
 /// </summary>
 /// <typeparam name="T">Options</typeparam>
 /// <param name="port">TCP server port</param>
-internal abstract class BaseResponseService<T>(int port) : BaseService<T> where T : class, IEnable, new()
+internal abstract class BaseResponseService<T>(int port) : BaseService<T>(port) where T : class, IEnable, new()
 {
     /// <summary>
     /// Current set of options. Null if none have been set yet
@@ -61,7 +61,7 @@ internal abstract class BaseResponseService<T>(int port) : BaseService<T> where 
         {
             throw new InvalidOperationException("Service already started");
         }
-        server = new(IPAddress.IPv6Any, port);
+        server = new(IPAddress.IPv6Any, Port);
         server.Server.DualMode = true;
         try
         {

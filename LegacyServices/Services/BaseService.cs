@@ -1,6 +1,6 @@
 ﻿namespace LegacyServices.Services;
 
-internal abstract class BaseService<T> : BaseService
+internal abstract class BaseService<T>(int port) : BaseService(port)
 {
     /// <summary>
     /// (Re-)loads service configuration from the given configuration
@@ -15,7 +15,7 @@ internal abstract class BaseService<T> : BaseService
     public abstract T GetDefaultConfig();
 }
 
-internal abstract class BaseService
+internal abstract class BaseService(int port)
 {
     private string name = null!;
 
@@ -44,6 +44,15 @@ internal abstract class BaseService
             name = value;
         }
     }
+
+    /// <summary>
+    /// Gets the port in use by the service
+    /// </summary>
+    /// <remarks>
+    /// This value indicates the TCP port of the listener,
+    /// not whether the listener is actually listening or suspended.
+    /// </remarks>
+    public int Port => port;
 
     /// <summary>
     /// Starts the service

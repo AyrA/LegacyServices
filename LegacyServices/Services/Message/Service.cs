@@ -8,7 +8,7 @@ internal class Service : BaseService<Options>
     private Options? opt;
     private TcpListener? listener;
 
-    public Service()
+    public Service() : base(18)
     {
         Name = "Message";
     }
@@ -58,7 +58,7 @@ internal class Service : BaseService<Options>
         {
             throw new InvalidOperationException("Service already started");
         }
-        listener = new(IPAddress.IPv6Any, 18);
+        listener = new(IPAddress.IPv6Any, Port);
         listener.Server.DualMode = true;
         listener.Start();
         Accept();

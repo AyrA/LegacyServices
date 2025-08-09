@@ -11,7 +11,7 @@ internal class Service : BaseService<Options>
     private X509Certificate2? certificate;
     private TcpListener? listener;
 
-    public Service()
+    public Service() : base(1)
     {
         Name = "TcpMultiplex";
     }
@@ -60,7 +60,7 @@ internal class Service : BaseService<Options>
             Enabled = true,
             Help = true,
             StartTls = true,
-            Services = [new() { Name = "TCPMUX", Endpoint = IPEndPoint.Parse("127.1:1"), Public = true }]
+            Services = [new() { Name = "TCPMUX", Endpoint = IPEndPoint.Parse($"127.1:{Port}"), Public = true }]
         };
     }
 
@@ -78,7 +78,7 @@ internal class Service : BaseService<Options>
         {
             throw new InvalidOperationException("Service already started");
         }
-        listener = new(IPAddress.IPv6Any, 1);
+        listener = new(IPAddress.IPv6Any, Port);
         listener.Server.DualMode = true;
         listener.Start();
         Accept();
