@@ -11,7 +11,7 @@
 ## Description
 
 Service that sends back the current date and time in a format that is easy to handle for computers.
-The protocol will stop working at Thu 2036-02-07 06:28:15 UTC
+The protocol will stop working at 2036-02-07 06:28:15 UTC because the integer will overflow back to 1900-01-01 00:00:00 UTC.
 
 ## Protocol usage
 

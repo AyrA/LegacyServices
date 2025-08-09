@@ -2,7 +2,7 @@
 
 - **Full Name**: Active Users
 - **Port**: 11
-- **Security**: Questionable
+- **Security**: Problematic
 - **Implementation**: Compatible
 - **Usability**: Minimal
 - **Type**: Text

@@ -38,7 +38,7 @@ The service is configured in `Qotd.json`
 	"Enabled": true,
 	//List of quotes. A predefined set is used if not defined or null. The list cannot be empty, and quotes cannot be null, blank, or whitespace only
 	"Quotes": ["Quote 1","Quote 2","..."],
-	//Allow quotes exceeding 511 characters. The RFC recommends quotes to be shorter than that, possibly due to early limits in packet sizes without causing fragmentation
+	//Allow quotes exceeding 511 characters. The RFC recommends quotes to be shorter than that due to early limits in UDP packet sizes without causing fragmentation
 	"AllowExcessiveLength": false
 }
 ```

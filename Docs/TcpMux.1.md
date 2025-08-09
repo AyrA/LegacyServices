@@ -2,7 +2,7 @@
 
 - **Full Name**: TCP Port Service Multiplexer (TCPMUX)
 - **Port**: 1
-- **Security**: Problematic
+- **Security**: Problematic, Questionable
 - **Implementation**: Compatible, Extra
 - **Usability**: Minimal
 - **Type**: Text, CI
@@ -43,8 +43,7 @@ The RFC suggests using the list of well known service names for known services, 
 The service allows an attacker to easily enumerate all provided services if the "HELP" command is not disabled.
 This is comparable to a port scan but without the guesswork as to what a service is.
 
-Since all traffic is tunneled over a single port,
-it makes traditional network rules hard to enforce.
+Since all traffic is tunneled over a single port, it makes traditional network rules hard to enforce.
 
 The protocol lacks any form of authentication.
 
@@ -53,10 +52,9 @@ The protocol provides only minimal benefit over direct port exposure of backend 
 ## Modern usage
 
 There are practically no valid usage scenarios for modern times. In general, the 65535 possible TCP ports are sufficient.
+In a sufficiently secure environment, the protocol could be used as a sort of service discovery mechanism.
 
-In a sufficiently secure environment, the protocol could be used as a sort of service discovery.
-
-Although not mentioned in the RFC, the requested service doesn't has to be on the same machine. This allows the machine to effectively be turned into a reverse proxy, or a single point of entry into a network.
+Although not mentioned in the RFC, the requested service doesn't has to be on the same machine. This allows the machine running the multiplex service to effectively be turned into a reverse proxy, or a single point of entry into a network.
 
 ## Implementation
 
@@ -83,7 +81,7 @@ The service is configured in `TcpMultiplex.json`
 		// Key file. PEM or binary. Incomplete paths are resolved relative to the config directory.
 		"Private": "path/to/key"
 	},
-	// Service list. See below for service object
+	// Service list. See below for the format of service objects
 	"Services": []
 }
 // Service
@@ -92,7 +90,7 @@ The service is configured in `TcpMultiplex.json`
 	"Name": "HTTP",
 	// Endpoint where to connect to
 	"Endpoint": "127.0.0.1:80",
-	// true to report it in HELP, false to hide
+	// true to report this service via HELP, false to hide
 	"Public": true
 }
 ```

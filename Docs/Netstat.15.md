@@ -2,7 +2,7 @@
 
 - **Full Name**: Netstat Service
 - **Port**: 15
-- **Security**: Problematic
+- **Security**: Dangerous, Problematic
 - **Implementation**: Unspecified
 - **Usability**: Minimal
 - **Type**: Text

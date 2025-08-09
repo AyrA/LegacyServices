@@ -5,7 +5,7 @@
 - **Security**: Questionable
 - **Implementation**: Compatible
 - **Usability**: Minimal
-- **Type**: Text
+- **Type**: Text, CI
 - **RFC**: [1312](https://www.rfc-editor.org/rfc/rfc1312)
 
 ## Description

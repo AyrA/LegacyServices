@@ -1,10 +1,11 @@
 # Terms used in these documents
 
 This document briefly explains the terms used in other documents.
+Some defined terms may not currently be in use.
 
-## Introduction
+## Introduction Chapter
 
-The introduction for each service contains a list as follows:
+The introduction chapter for each service contains a list as follows:
 
 ### Full Name
 
@@ -18,11 +19,13 @@ The TCP port number this service is intended to run at
 
 Protocol security in regards to modern expectations:
 
-- **Dangerous**: Protocol is dangerous (by design) and should not be exposed at all
+- **Dangerous**: Protocol is dangerous (by design) and should not be exposed at all because it cannot be made safe without making it incompatible
 - **Problematic**: Protocol lacks important security features and should not be used
 - **Questionable**: Protocol is generally safe but may have questionable features that need attention before deploying
 - **Undefined**: Difficult to evaluate
 - **Safe**: Protocol is safe to use if properly deployed (and potentially limited)
+
+Multiple values may be specified if they depend on the service configuration
 
 ### Implementation
 
