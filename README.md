@@ -20,8 +20,11 @@ Implemented are (in TCP port order):
 - Message
 - Chargen
 - Time
+- Pwdgen
 
-Each protocol has a document in the "Docs" folder that briefly explains it. This document also shows all possible configuration options
+Each protocol has a document in the "Docs" folder that briefly explains it. This document also shows all possible configuration options.
+
+All protocols are enabled in the TCP multiplex service by default.
 
 ## Configuration
 

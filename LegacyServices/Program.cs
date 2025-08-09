@@ -11,6 +11,7 @@ List<BaseService> services = [
     new LegacyServices.Services.Message.Service(),
     new LegacyServices.Services.Chargen.Service(),
     new LegacyServices.Services.Time.Service(),
+    new LegacyServices.Services.Pwdgen.Service(),
 ];
 var configRoot = Path.Combine(AppContext.BaseDirectory, "Config");
 
@@ -54,6 +55,7 @@ foreach (var s in services)
     {
         Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("Service is disabled by configuration. Did not start");
+        Console.ResetColor();
     }
 }
 Console.WriteLine("Press CTRL+C to exit");

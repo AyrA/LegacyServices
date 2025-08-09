@@ -51,6 +51,11 @@
             "Name": "Time",
             "Endpoint": "127.0.0.1:37",
             "Public": true
+        },
+        {
+            "Name": "Pwdgen",
+            "Endpoint": "127.0.0.1:129",
+            "Public": true
         }
     ]
 }
