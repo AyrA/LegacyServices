@@ -28,7 +28,7 @@ While not usable for passwords, it may be usable as an entropy source for microc
 
 ## Implementation
 
-Implementation is as per RFC in the sence that the protocol specification is honored.
+Implementation is as per RFC in the sense that the protocol specification is honored.
 The RFC suggests generating passwords that are easy to pronounce, the current implementation uses a purely RNG based approach however.
 By default the service generates six passwords with eight characters each. This is configurable.
 
