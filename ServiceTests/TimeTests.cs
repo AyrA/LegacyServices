@@ -55,7 +55,7 @@ public class TimeTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 37), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 2000;
         byte[] buffer = new byte[20];
@@ -79,7 +79,7 @@ public class TimeTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 37), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 2000;
         byte[] buffer = new byte[20];

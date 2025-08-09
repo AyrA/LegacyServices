@@ -90,11 +90,30 @@ public class QotdTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 17), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 2000;
         using var sr = new StreamReader(ns);
         var result = sr.ReadToEnd().Trim();
         Assert.That(string.IsNullOrWhiteSpace(result), Is.False);
+    }
+
+    [Test]
+    public async Task GetCustomQuote()
+    {
+        CancellationTokenSource cts = new();
+        cts.CancelAfter(5000);
+        var config = service.GetDefaultConfig();
+        config.Quotes = ["Quote A", "Quote B", "Quote C", "Quote D"];
+        service.Config(config);
+        service.Start();
+
+        using var cli = new TcpClient();
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
+        using var ns = new NetworkStream(cli.Client);
+        ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 2000;
+        using var sr = new StreamReader(ns);
+        var result = sr.ReadToEnd().Trim();
+        Assert.That(config.Quotes, Does.Contain(result));
     }
 }

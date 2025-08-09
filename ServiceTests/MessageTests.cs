@@ -55,7 +55,7 @@ public class MessageTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 18), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 5000;
         byte[] msg = [(byte)'A', .. ToBin(Environment.UserName), .. ToBin(""), .. ToBin("test")];
@@ -84,7 +84,7 @@ public class MessageTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 18), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 5000;
         byte[] msg = [(byte)'B', .. ToBin(Environment.UserName), .. ToBin(""), .. ToBin("test"),
@@ -114,7 +114,7 @@ public class MessageTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 18), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 5000;
         byte[] msg = [(byte)'A', .. ToBin(Environment.UserName), .. ToBin(""), .. ToBin("test")];
@@ -145,7 +145,7 @@ public class MessageTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 18), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 5000;
         byte[] msg = [(byte)'A', .. ToBin(Environment.UserName), .. ToBin(""), .. ToBin("test")];
@@ -176,7 +176,7 @@ public class MessageTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 18), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 5000;
         byte[] msg = [(byte)'B', .. ToBin(Environment.UserName), .. ToBin(""), .. ToBin("test"),
@@ -206,7 +206,7 @@ public class MessageTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 18), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client);
         ns.ReadTimeout = ns.WriteTimeout = cli.SendTimeout = cli.ReceiveTimeout = 5000;
 

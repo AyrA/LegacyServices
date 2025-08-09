@@ -87,7 +87,7 @@ public class TcpMultiplexTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 1), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         ns.ReadTimeout = ns.WriteTimeout = 5000;
         using var sw = new StreamWriter(ns);
@@ -120,7 +120,7 @@ public class TcpMultiplexTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 1), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         ns.ReadTimeout = ns.WriteTimeout = 5000;
         using var tls = new SslStream(ns, false);
@@ -163,7 +163,7 @@ public class TcpMultiplexTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 1), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         ns.ReadTimeout = ns.WriteTimeout = 10000;
         using var sw = new StreamWriter(ns);
@@ -201,7 +201,7 @@ public class TcpMultiplexTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 1), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         ns.ReadTimeout = ns.WriteTimeout = 10000;
 

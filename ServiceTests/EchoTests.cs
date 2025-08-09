@@ -54,7 +54,7 @@ public class EchoTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 7), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         ns.ReadTimeout = ns.WriteTimeout = 5000;
         using var bw = new BinaryWriter(ns);
@@ -78,7 +78,7 @@ public class EchoTests
         service.Start();
 
         using var cli = new TcpClient();
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 7), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         ns.ReadTimeout = ns.WriteTimeout = 15000;
         var discard = ns.CopyToAsync(Stream.Null); //Discard received data
@@ -119,7 +119,7 @@ public class EchoTests
 
         using var cli = new TcpClient();
         cli.NoDelay = true;
-        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, 7), cts.Token);
+        await cli.ConnectAsync(new IPEndPoint(IPAddress.Loopback, service.Port), cts.Token);
         using var ns = new NetworkStream(cli.Client, true);
         var discard = ns.CopyToAsync(Stream.Null); //Discard received data
         byte[] data = [.. Enumerable.Range(0, 0x100).Select(m => (byte)m)];
