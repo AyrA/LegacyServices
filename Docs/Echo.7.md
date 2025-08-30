@@ -14,7 +14,7 @@ Service that simply sends all data it receives back
 
 ## Protocol usage
 
-The protocol starts in echo mode.
+No special usage requirements. The protocol immediately starts in echo mode.
 
 ## Security considerations
 

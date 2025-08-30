@@ -156,7 +156,10 @@ internal class Service : BaseService<Options>
                         {
                             if (string.IsNullOrEmpty(sender))
                             {
-                                Console.WriteLine("Message from {0}: {1}", clientEP.Address, msg);
+                                if (!options.Discard)
+                                {
+                                    Console.WriteLine("Message from {0}: {1}", clientEP.Address, msg);
+                                }
                                 await Reply(true, "Message sent", ns, cts.Token);
                             }
                             else if (IsSafe(sender) && IsSafe(senderTerminal))

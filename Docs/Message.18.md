@@ -19,6 +19,7 @@ Client sends a command, and the server replies with a success or error message. 
 ## Security considerations
 
 This protocol allows unauthenticated users to send messages to a user. Version "B" adds a mitigation for this in form of the "signature" value but the signature is left implementation defined. Using proper cryptographic signatures by the sender can make this protocol safe, but the server still needs to safeguard against reply attacks.
+Without a signature, the sender name can be trivially spoofed.
 
 Unless carefully filtered, the message can mess with the terminal because Linux people are stuck in the 80s and cannot be bothered to separate terminal control codes from text data. This problem is less prominent on Windows, unless the terminal runs in "Virtual Terminal" mode.
 

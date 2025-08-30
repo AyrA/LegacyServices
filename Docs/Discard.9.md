@@ -1,4 +1,4 @@
-# Echo Service
+# Discard Service
 
 - **Full Name**: Discard Protocol
 - **Port**: 9

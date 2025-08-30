@@ -28,7 +28,7 @@ There are practically no valid usage scenarios for modern times. Modern systems 
 
 Implementation is as per RFC.
 Users are returned as plain user names for local users,
-and (on Windows) user@domain for remote users
+and (on Windows) user@domain for Active Directory users
 
 ## Configuration
 

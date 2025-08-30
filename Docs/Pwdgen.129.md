@@ -10,7 +10,7 @@
 
 ## Description
 
-Service that generates passwords and sends them to the client
+Service that generates passwords and sends them to the client.
 
 ## Protocol usage
 

@@ -14,8 +14,8 @@ Unless otherwise stated, lines use CRLF as line ending
 
 ## CI
 
-In text based protocols, indicates that the protocol is case insensitive unless stated otherwise
+In text based protocols, indicates that the protocol is case insensitive
 
 ## Binary
 
-Protocol is 8-bit binary
+Protocol is 8-bit binary. Binary protocols are big endian unless otherwise specified.

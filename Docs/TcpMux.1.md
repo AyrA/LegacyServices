@@ -84,9 +84,9 @@ The service is configured in `TcpMultiplex.json`
 	// Service list. See below for the format of service objects
 	"Services": []
 }
-// Service
+// Service object
 {
-	// Name as shown in HELP command
+	// Name to invoke the service
 	"Name": "HTTP",
 	// Endpoint where to connect to
 	"Endpoint": "127.0.0.1:80",

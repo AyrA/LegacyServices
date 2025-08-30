@@ -43,7 +43,7 @@ The service is configured in `Chargen.json`
 	"LineLimit": 1e6,
 	//Delay individual lines by the given number of milliseconds. Zero indicates no delay
 	"LineDelay": 100,
-	//Apply the delay accross all connected clients rather than individually
+	//Apply the delay accross all connected clients rather than individually (more clients = more delay)
 	"GlobalDelay": false,
 	//Speedtest mode. Sends multiple lines at once. Cannot be used together with LineDelay or GlobalDelay. LineLimit works but will only be accurate to a block boundary
 	"SpeedTest": false

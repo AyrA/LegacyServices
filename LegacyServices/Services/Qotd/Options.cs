@@ -12,7 +12,8 @@ internal class Options : IEnable, IValidateable
         "Sometimes the most important thing a person can ever say is \"I was here\"",
         "The difference between an oral thermometer and an anal thermometer is the taste",
         "If hard work makes you rich then show me a rich donkey - Russian Proverb",
-        "Be liberal in what you accept, and conservative in what you send - Postel's law"
+        "Be liberal in what you accept, and conservative in what you send - Postel's law",
+        "The best way to get the right answer on the internet is to post the wrong answer. - Murphy's law"
     ];
 
     public bool Enabled { get; set; }

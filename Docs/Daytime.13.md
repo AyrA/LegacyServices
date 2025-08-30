@@ -18,7 +18,7 @@ No special usage requirements. The value is sent immediately.
 
 ## Security considerations
 
-None. Other protocols like HTTP also have the ability to report server time to the user, and this feature is usually enabled by default.
+None. Other protocols like HTTP also have the ability to report server time to the user, and this feature is usually enabled by default (See "Date" header).
 
 ## Modern usage
 

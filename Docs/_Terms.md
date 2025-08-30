@@ -43,7 +43,7 @@ More details will be available in the "Implementation" chapter of the relevant p
 
 How usable the protocol is in modern times.
 
-- **Minimal**: Next to not benefit, or the benefits to not outweigh the security considerations
+- **Minimal**: Next to no benefit, or the benefits do not outweigh the security considerations
 - **Moderate**: Protocol may still be useful to some degree in niche applications
 - **Useful**: Protocol may still be useful or is outright still commonly in use today.
 
