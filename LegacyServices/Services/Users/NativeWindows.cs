@@ -90,7 +90,7 @@ internal class NativeWindows : UserList
             int retVal = WTSEnumerateSessions(serverHandle, 0, 1, ref sessionInfoPtr, ref sessionCount);
             if (retVal != 0)
             {
-                int dataSize = Marshal.SizeOf(typeof(WTS_SESSION_INFO));
+                int dataSize = Marshal.SizeOf<WTS_SESSION_INFO>();
                 nint currentSession = sessionInfoPtr;
 
                 for (int i = 0; i < sessionCount; i++)

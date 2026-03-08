@@ -97,12 +97,16 @@ public class TcpMultiplexTests
         await WriteLine(sw, "HELP", cts.Token);
 
         var lines = new List<string>();
-        while (!sr.EndOfStream)
+        while (true)
         {
             var line = await ReadLine(sr, cts.Token);
             if (line != null)
             {
                 lines.Add(line);
+            }
+            else
+            {
+                break;
             }
         }
 
@@ -140,12 +144,16 @@ public class TcpMultiplexTests
         await WriteLine(sw, "HELP", cts.Token);
 
         var lines = new List<string>();
-        while (!sr.EndOfStream)
+        while (true)
         {
             var line = await ReadLine(sr, cts.Token);
             if (line != null)
             {
                 lines.Add(line);
+            }
+            else
+            {
+                break;
             }
         }
 
@@ -179,12 +187,16 @@ public class TcpMultiplexTests
 
 
         var lines = new List<string>();
-        while (!sr.EndOfStream)
+        while (true)
         {
             var line = await ReadLine(sr, cts.Token);
             if (line != null)
             {
                 lines.Add(line);
+            }
+            else
+            {
+                break;
             }
         }
 
@@ -228,12 +240,16 @@ public class TcpMultiplexTests
 
 
         var lines = new List<string>();
-        while (!sr.EndOfStream)
+        while (true)
         {
             var line = await ReadLine(sr, cts.Token);
             if (line != null)
             {
                 lines.Add(line);
+            }
+            else
+            {
+                break;
             }
         }
 

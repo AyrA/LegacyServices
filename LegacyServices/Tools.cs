@@ -61,7 +61,7 @@ internal static class Tools
         if (OperatingSystem.IsWindows())
         {
             using var pemCert = X509Certificate2.CreateFromPem(publicCert, privateKey);
-            return new X509Certificate2(pemCert.Export(X509ContentType.Pfx));
+            return X509CertificateLoader.LoadPkcs12(pemCert.Export(X509ContentType.Pfx), null);
         }
         return X509Certificate2.CreateFromPem(publicCert, privateKey);
     }
@@ -76,7 +76,7 @@ internal static class Tools
         {
             using (cert)
             {
-                return new X509Certificate2(cert.Export(X509ContentType.Pfx));
+                return X509CertificateLoader.LoadPkcs12(cert.Export(X509ContentType.Pfx), null);
             }
         }
         return cert;
